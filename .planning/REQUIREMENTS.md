@@ -5,7 +5,7 @@
 
 ## v1 Requirements
 
-Requirements for the POC release. Each maps to roadmap phases.
+Requirements for the POC release. Each maps to exactly one roadmap phase.
 
 ### Sentinel Querying
 
@@ -88,15 +88,15 @@ Explicitly excluded. Documented to prevent scope creep.
 
 ## Traceability
 
-Which phases cover which requirements. Updated during roadmap creation.
+Each v1 requirement maps to exactly one phase. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| QUERY-01 | Phase 2, 3 | Pending |
-| QUERY-02 | Phase 2, 3 | Pending |
+| QUERY-01 | Phase 2 | Pending |
+| QUERY-02 | Phase 2 | Pending |
 | QUERY-03 | Phase 2 | Pending |
-| QUERY-04 | Phase 2, 3 | Pending |
-| QUERY-05 | Phase 2, 3 | Pending |
+| QUERY-04 | Phase 2 | Pending |
+| QUERY-05 | Phase 2 | Pending |
 | ORCH-01 | Phase 3 | Pending |
 | ORCH-02 | Phase 3 | Pending |
 | ORCH-03 | Phase 3 | Pending |
@@ -104,13 +104,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | KB-02 | Phase 4 | Pending |
 | KB-03 | Phase 4 | Pending |
 | CLI-01 | Phase 5 | Pending |
-| CLI-02 | Phase 1-5 | Pending |
+| CLI-02 | Phase 5 | Pending |
 | CLI-03 | Phase 5 | Pending |
 | CLI-04 | Phase 5 | Pending |
 | CLI-05 | Phase 5 | Pending |
-| CLI-06 | Phase 5, 7 | Pending |
-| DEMO-01 | Phase 7 | Pending |
-| DEMO-02 | Phase 7 | Pending |
+| CLI-06 | Phase 5 | Pending |
+| DEMO-01 | Phase 6 | Pending |
+| DEMO-02 | Phase 6 | Pending |
 
 **Coverage:**
 - v1 requirements: 19 total
@@ -119,4 +119,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-16*
-*Last updated: 2026-02-16 after initial definition*
+*Last updated: 2026-02-17 after roadmap creation (one-to-one phase mappings)*
