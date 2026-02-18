@@ -31,11 +31,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Azure Monitor `LogsQueryClient` successfully executes a simple KQL query (`SecurityIncident | take 1`) against the Sentinel workspace
   4. Content filter modification request has been submitted in Azure AI Foundry (approval may be pending)
   5. `pytest` discovers and runs test files from the `tests/` directory with the project structure intact
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Azure resource provisioning and content filter modification
-- [ ] 01-02: Project scaffolding and configuration module
+- [ ] 01-01-PLAN.md -- Azure resource provisioning, content filter, .env setup
+- [ ] 01-02-PLAN.md -- Project scaffolding, config module, tests, mock fixtures
 
 ### Phase 2: Sentinel Data Access
 **Goal**: The Sentinel client can execute all pre-defined KQL query templates and return structured, field-projected results from live Sentinel data
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Not started | - |
+| 1. Foundation | 0/2 | Planning complete | - |
 | 2. Sentinel Data Access | 0/2 | Not started | - |
 | 3. AI Orchestration & Integration | 0/2 | Not started | - |
 | 4. Knowledge Base | 0/2 | Not started | - |
