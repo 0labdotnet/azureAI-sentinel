@@ -1,0 +1,18 @@
+[project]
+name = "sentinel-rag-chatbot"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+description = "POC chatbot for querying Microsoft Sentinel via Azure OpenAI"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: marks tests requiring live Azure resources (deselect with '-m \"not integration\"')",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]

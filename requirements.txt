@@ -1,0 +1,10 @@
+# Azure SDKs
+azure-identity>=1.25.0
+azure-monitor-query>=2.0.0
+
+# Azure OpenAI
+openai>=2.21.0
+
+# Utilities
+python-dotenv>=1.0.0
+rich>=14.0.0
