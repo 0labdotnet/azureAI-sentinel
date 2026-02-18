@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [ ] 01-01-PLAN.md -- Azure resource provisioning, content filter, .env setup
-- [ ] 01-02-PLAN.md -- Project scaffolding, config module, tests, mock fixtures
+- [x] 01-02-PLAN.md -- Project scaffolding, config module, tests, mock fixtures
 
 ### Phase 2: Sentinel Data Access
 **Goal**: The Sentinel client can execute all pre-defined KQL query templates and return structured, field-projected results from live Sentinel data
