@@ -7,7 +7,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Skill(gsd:discuss-phase)"
+      "Skill(gsd:discuss-phase)",
+      "WebFetch(domain:registry.npmjs.org)",
+      "WebSearch"
     ]
   }
 }
