@@ -1,0 +1,30 @@
+# Secrets
+.env
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Vector store data (Phase 4)
+data/chroma_db/
+
+# Testing
+.pytest_cache/
+
+# Linting
+.ruff_cache/
+
+# Packaging artifacts
+*.egg-info/
+dist/
+build/
+
+# IDE settings
+.idea/
+.vscode/
