@@ -47,11 +47,11 @@ Plans:
   3. `sentinel_client.py` can query security alerts filtered by severity and time range
   4. `sentinel_client.py` can return alert trend data over a configurable time period and entity frequency rankings
   5. All queries handle partial results, timeouts, and HTTP 429 throttling with retry logic
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: KQL template registry and incident/alert queries
-- [ ] 02-02: Trend analysis, entity queries, and resilience (retry, throttling, partial results)
+- [ ] 02-01-PLAN.md -- Data models, KQL template registry, projections, and SentinelClient with incident/alert queries
+- [ ] 02-02-PLAN.md -- Trend/entity queries, SentinelClient extension, and live data verification
 
 ### Phase 3: AI Orchestration & Integration
 **Goal**: Users can have multi-turn natural language conversations that invoke Sentinel tools and receive grounded, accurate responses with reasoning transparency
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete | 2026-02-18 |
-| 2. Sentinel Data Access | 0/2 | Not started | - |
+| 2. Sentinel Data Access | 0/2 | Planned | - |
 | 3. AI Orchestration & Integration | 0/2 | Not started | - |
 | 4. Knowledge Base | 0/2 | Not started | - |
 | 5. CLI Experience & Polish | 0/2 | Not started | - |
