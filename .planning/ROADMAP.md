@@ -12,7 +12,7 @@ This roadmap delivers a POC command-line chatbot that gives SOC analysts natural
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Azure resource provisioning, content filter modification, project scaffolding, and config validation
+- [x] **Phase 1: Foundation** - Azure resource provisioning, content filter modification, project scaffolding, and config validation
 - [ ] **Phase 2: Sentinel Data Access** - KQL template registry and Sentinel client with live data queries for incidents, alerts, trends, and entities
 - [ ] **Phase 3: AI Orchestration & Integration** - OpenAI tool loop, tool dispatch, multi-turn conversation, grounded responses, and end-to-end natural language querying
 - [ ] **Phase 4: Knowledge Base** - ChromaDB vector store with historical incident search, MITRE ATT&CK investigation guidance, and playbook retrieval
@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Azure resource provisioning, content filter, .env setup
+- [x] 01-01-PLAN.md -- Azure resource provisioning, content filter, .env setup
 - [x] 01-02-PLAN.md -- Project scaffolding, config module, tests, mock fixtures
 
 ### Phase 2: Sentinel Data Access
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Planning complete | - |
+| 1. Foundation | 2/2 | Complete | 2026-02-18 |
 | 2. Sentinel Data Access | 0/2 | Not started | - |
 | 3. AI Orchestration & Integration | 0/2 | Not started | - |
 | 4. Knowledge Base | 0/2 | Not started | - |

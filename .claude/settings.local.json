@@ -9,7 +9,13 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Skill(gsd:discuss-phase)",
       "WebFetch(domain:registry.npmjs.org)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(py:*)",
+      "Bash(.venv/Scripts/python.exe -m pip:*)",
+      "Bash(.venv/Scripts/python.exe -m pip install:*)",
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(az account show:*)"
     ]
   }
 }

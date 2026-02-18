@@ -43,10 +43,13 @@ def mock_env_vars(monkeypatch):
 
 @pytest.fixture
 def clean_env(monkeypatch):
-    """Clear all AZURE_* and SENTINEL_* env vars."""
+    """Clear all AZURE_* and SENTINEL_* env vars and prevent .env reload."""
     env_prefixes = ("AZURE_", "SENTINEL_")
     import os
 
     for key in list(os.environ.keys()):
         if key.startswith(env_prefixes):
             monkeypatch.delenv(key, raising=False)
+
+    # Prevent load_dotenv() from re-reading .env file during tests
+    monkeypatch.setattr("src.config.load_dotenv", lambda *a, **kw: None)
