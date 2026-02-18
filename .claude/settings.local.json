@@ -5,7 +5,9 @@
       "Bash(git -C \"C:\\\\code\\\\azureAI-sentinel\" remote -v)",
       "Bash(node \"C:/Users/AlexSandstrom/.claude/get-shit-done/bin/gsd-tools.cjs\" commit \"docs: complete project research\" --files .planning/research/)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Skill(gsd:discuss-phase)"
     ]
   }
 }
