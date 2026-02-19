@@ -36,6 +36,10 @@ class Settings:
     azure_client_id: str = ""
     azure_client_secret: str = ""
 
+    # Internal tuning knobs (not loaded from env vars)
+    max_tool_rounds: int = 5
+    max_turns: int = 30
+
 
 # Phase 1 required vars -- later phases add to this
 REQUIRED_VARS: dict[str, str] = {
