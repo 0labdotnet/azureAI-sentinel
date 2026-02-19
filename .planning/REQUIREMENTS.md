@@ -18,8 +18,8 @@ Requirements for the POC release. Each maps to exactly one roadmap phase.
 ### AI Orchestration
 
 - [ ] **ORCH-01**: User can have multi-turn conversations where the chatbot remembers prior context (e.g., "tell me more about that incident" after an incident list)
-- [ ] **ORCH-02**: All factual claims in chatbot responses are grounded in tool call results — the chatbot never fabricates incident numbers, severities, or timestamps
-- [ ] **ORCH-03**: Chatbot explains its reasoning by describing which tools it used and what data it found before answering
+- [x] **ORCH-02**: All factual claims in chatbot responses are grounded in tool call results — the chatbot never fabricates incident numbers, severities, or timestamps
+- [x] **ORCH-03**: Chatbot explains its reasoning by describing which tools it used and what data it found before answering
 
 ### Knowledge Base
 
@@ -98,8 +98,8 @@ Each v1 requirement maps to exactly one phase. Updated during roadmap creation.
 | QUERY-04 | Phase 2 | Complete |
 | QUERY-05 | Phase 2 | Complete |
 | ORCH-01 | Phase 3 | Pending |
-| ORCH-02 | Phase 3 | Pending |
-| ORCH-03 | Phase 3 | Pending |
+| ORCH-02 | Phase 3 | Complete |
+| ORCH-03 | Phase 3 | Complete |
 | KB-01 | Phase 4 | Pending |
 | KB-02 | Phase 4 | Pending |
 | KB-03 | Phase 4 | Pending |

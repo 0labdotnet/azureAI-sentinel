@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 3 of 6 (AI Orchestration & Integration)
-Plan: 1 of 2 in current phase
-Status: Phase 2 complete, Phase 3 next
-Last activity: 2026-02-18 -- Plan 02-02 complete (trend/entity queries, live verification of all 5 SentinelClient methods)
+Plan: 2 of 2 in current phase
+Status: Plan 03-01 complete, Plan 03-02 next
+Last activity: 2026-02-19 -- Plan 03-01 complete (tool definitions, dispatch handler, system prompt)
 
-Progress: [████░░░░░░] 33%
+Progress: [█████░░░░░] 42%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 12min (automated only)
-- Total execution time: 0.58 hours (automated only)
+- Total plans completed: 5
+- Average duration: 11min (automated only)
+- Total execution time: 0.67 hours (automated only)
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████░░░░░░] 33%
 |-------|-------|-------|----------|
 | 1. Foundation | 2 | 8min + manual | 8min (auto) |
 | 2. Sentinel Data Access | 2 | 27min | 14min |
+| 3. AI Orchestration | 1 (of 2) | 5min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (manual), 01-02 (8min), 02-01 (9min), 02-02 (18min)
-- Trend: Phase 2 complete, Phase 3 next
+- Last 5 plans: 01-02 (8min), 02-01 (9min), 02-02 (18min), 03-01 (5min)
+- Trend: Plan 03-01 complete, continuing Phase 3
 
 *Updated after each plan completion*
 
@@ -58,6 +59,9 @@ Recent decisions affecting current work:
 - [02-02]: Aggregation queries (trend, entity) use 180s server_timeout vs 60s for simple queries
 - [02-02]: Auto-select bin_size: 1h for short windows (last_1h/last_24h), 1d for longer (last_3d+)
 - [02-02]: Entity extraction uses parse_json + mv-expand KQL pattern with case() for account/ip/host types
+- [03-01]: incident_ref typed as string in JSON schema with description guidance for int/str union (OpenAI tools don't support oneOf well)
+- [03-01]: Used getattr fallback for method.__name__ in retry logging to support MagicMock in tests
+- [03-01]: No strict mode on tool schemas (incompatible with parallel tool calls)
 
 ### Pending Todos
 
@@ -71,5 +75,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-19
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-ai-orchestration-integration/03-CONTEXT.md
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-ai-orchestration-integration/03-01-SUMMARY.md
