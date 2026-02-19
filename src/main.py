@@ -60,7 +60,10 @@ def run_chat() -> None:
 
         if user_input.lower() == "/clear":
             summary = session.clear()
-            print(f"\nSummary: {summary}")
+            # Clear terminal: ANSI escape \033[2J clears screen, \033[H moves cursor home
+            print("\033[2J\033[H", end="", flush=True)
+            print(_WELCOME_BANNER, file=sys.stderr)
+            print(f"Summary: {summary}")
             print("Conversation cleared.")
             continue
 
