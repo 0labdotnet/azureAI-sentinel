@@ -11,6 +11,10 @@ Requires: .env file with valid Azure credentials and SENTINEL_WORKSPACE_ID.
 
 import sys
 import traceback
+from pathlib import Path
+
+# Ensure project root is on sys.path so `src` is importable when running directly
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.config import load_settings
 from src.models import QueryError, QueryResult
