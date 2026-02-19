@@ -1,9 +1,9 @@
 ---
-status: complete
+status: resolved
 phase: 02-sentinel-data-access
 source: [02-01-SUMMARY.md, 02-02-SUMMARY.md]
 started: 2026-02-18T12:00:00Z
-updated: 2026-02-19T14:30:00Z
+updated: 2026-02-19T16:00:00Z
 ---
 
 ## Current Test
@@ -53,11 +53,11 @@ skipped: 0
 ## Gaps
 
 - truth: "get_top_entities output has clear spacing between count and label for LLM parsing"
-  status: failed
-  reason: "User reported: need to add a space between the entity count and the words 'entities' so the LLM can properly parse the response"
+  status: resolved
+  reason: "Added result_type field to QueryMetadata — all query methods now label their result type (incidents, alerts, entities, etc.) so the LLM can format '10 entities' with proper spacing"
   severity: minor
   test: 6
-  root_cause: ""
-  artifacts: []
+  root_cause: "QueryMetadata only had a numeric total field with no label indicating what the results represent"
+  artifacts: [src/models.py, src/sentinel_client.py]
   missing: []
   debug_session: ""
