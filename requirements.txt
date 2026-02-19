@@ -8,3 +8,4 @@ openai>=2.21.0
 # Utilities
 python-dotenv>=1.0.0
 rich>=14.0.0
+tiktoken>=0.12.0
