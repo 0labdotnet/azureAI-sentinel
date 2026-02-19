@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 03-ai-orchestration-integration
 source: [03-01-SUMMARY.md, 03-02-SUMMARY.md]
 started: 2026-02-19T21:30:00Z
-updated: 2026-02-19T21:42:00Z
+updated: 2026-02-19T21:48:00Z
 ---
 
 ## Current Test
@@ -56,17 +56,26 @@ skipped: 0
   reason: "User reported: incident number is not included with the returned results- we should make sure that is included with listed incidents and not just in incident details that have to be asked for."
   severity: major
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "System prompt [1]/[2]/[3] formatting rule causes LLM to use positional indices instead of displaying the Sentinel incident number field. Data is present at every pipeline stage (KQL, parser, model, projection) but the prompt gives no instruction to surface the number field."
+  artifacts:
+    - path: "src/prompts.py"
+      issue: "Response formatting rule uses positional [1]/[2]/[3] indices with no instruction to also display Sentinel incident numbers"
+  missing:
+    - "Add system prompt instruction to display Sentinel incident number (#N) in each list entry"
+  debug_session: ".planning/debug/incident-number-missing-list.md"
 
 - truth: "Timestamps are presented in the user's local timezone or clearly labeled as UTC"
   status: failed
   reason: "User reported: The chatbot is presenting timestamps as UTC currently- so it is not hallucinating, but it may confuse users that timestamps are not being adjusted for their timezone/locale."
   severity: minor
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Three compounding gaps: (1) format_relative_time() in models.py produces 'yesterday at 3:14 PM' from UTC datetime with no timezone label, (2) system prompt has zero timezone handling instructions, (3) to_dict() serializes as +00:00 instead of Z suffix."
+  artifacts:
+    - path: "src/models.py"
+      issue: "format_relative_time() yesterday branch omits UTC label; to_dict() uses +00:00 instead of Z"
+    - path: "src/prompts.py"
+      issue: "No timezone labeling instruction in SYSTEM_PROMPT"
+  missing:
+    - "Append ' UTC' to format_relative_time() yesterday branch"
+    - "Add UTC labeling rule to SYSTEM_PROMPT"
+  debug_session: ".planning/debug/timestamp-utc-labeling.md"
