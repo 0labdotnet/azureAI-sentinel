@@ -1,8 +1,8 @@
 """Enable execution via `python -m src`.
 
-Routes to configuration validation as the primary entry point.
+Routes to the interactive chat loop as the primary entry point.
 """
 
-from src.config import validate_and_display
+from src.main import run_chat
 
-validate_and_display()
+run_chat()

@@ -14,8 +14,8 @@
                         "id": "call_mock_001",
                         "type": "function",
                         "function": {
-                            "name": "query_sentinel_incidents",
-                            "arguments": "{\"severity\": \"High\", \"time_range_hours\": 24}"
+                            "name": "query_incidents",
+                            "arguments": "{\"time_window\": \"last_24h\", \"min_severity\": \"High\"}"
                         }
                     }
                 ]
