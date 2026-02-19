@@ -434,6 +434,7 @@ class SentinelClient:
                 query_ms=query_ms,
                 truncated=is_partial,
                 partial_error=partial_error,
+                result_type="incidents",
             ),
             results=projected,
         )
@@ -529,6 +530,7 @@ class SentinelClient:
                 query_ms=query_ms,
                 truncated=is_partial,
                 partial_error=partial_error,
+                result_type="incident_details",
             ),
             results=[
                 {
@@ -592,6 +594,7 @@ class SentinelClient:
                 query_ms=query_ms,
                 truncated=is_partial,
                 partial_error=partial_error,
+                result_type="alerts",
             ),
             results=projected,
         )
@@ -660,6 +663,7 @@ class SentinelClient:
                 query_ms=query_ms,
                 truncated=is_partial,
                 partial_error=partial_error,
+                result_type="trend_points",
             ),
             results=points,
         )
@@ -718,6 +722,7 @@ class SentinelClient:
                 query_ms=query_ms,
                 truncated=is_partial,
                 partial_error=partial_error,
+                result_type="entities",
             ),
             results=entities,
         )

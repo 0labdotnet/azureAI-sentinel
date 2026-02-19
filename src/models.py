@@ -52,6 +52,7 @@ class QueryMetadata:
     query_ms: float
     truncated: bool
     partial_error: str | None = None
+    result_type: str = "results"
 
 
 @dataclass
