@@ -63,11 +63,11 @@ Plans:
   3. All factual claims in responses (incident numbers, severities, timestamps) are traceable to tool call results with no fabricated data
   4. Chatbot explains which tools it used and what data it found before presenting its answer
   5. The tool loop terminates after MAX_TOOL_ROUNDS (5) iterations and never enters an infinite loop
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: OpenAI client with tool loop, token budget, and conversation history
-- [ ] 03-02: Tool definitions, dispatch table, and end-to-end integration
+- [ ] 03-01-PLAN.md -- Tool definitions, dispatch handler, system prompt, and tests
+- [ ] 03-02-PLAN.md -- ChatSession with tool loop, conversation management, CLI chat loop, and end-to-end verification
 
 ### Phase 4: Knowledge Base
 **Goal**: Users can query historical incidents and investigation playbooks through the ChromaDB vector store, receiving MITRE ATT&CK-mapped guidance and pattern matching results
