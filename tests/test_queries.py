@@ -89,7 +89,7 @@ class TestTemplateRegistry:
     """Tests for TEMPLATE_REGISTRY completeness."""
 
     def test_contains_all_expected_templates(self):
-        """Registry should contain all templates for Plan 01."""
+        """Registry should contain all templates across 4 domain modules."""
         expected = {
             "list_incidents",
             "get_incident_by_number",
@@ -97,12 +97,15 @@ class TestTemplateRegistry:
             "get_incident_alerts",
             "get_incident_entities",
             "list_alerts",
+            "alert_trend",
+            "alert_trend_total",
+            "top_entities",
         }
         assert expected.issubset(set(TEMPLATE_REGISTRY.keys()))
 
     def test_template_count(self):
-        """Registry should have exactly 6 templates in Plan 01."""
-        assert len(TEMPLATE_REGISTRY) == 6
+        """Registry should have exactly 9 templates across 4 domain modules."""
+        assert len(TEMPLATE_REGISTRY) == 9
 
 
 class TestBuildQuery:

@@ -9,7 +9,7 @@ validated parameter substitution.
 import re
 from datetime import timedelta
 
-from src.queries import alerts, incidents
+from src.queries import alerts, entities, incidents, trends
 
 # --------------------------------------------------------------------------
 # Severity threshold model
@@ -92,12 +92,13 @@ DEFAULT_TIMEOUT = 60
 
 # --------------------------------------------------------------------------
 # Template registry -- merged from all domain modules
-# trends.TEMPLATES and entities.TEMPLATES will be added in Plan 02.
 # --------------------------------------------------------------------------
 
 TEMPLATE_REGISTRY: dict[str, str] = {
     **incidents.TEMPLATES,
     **alerts.TEMPLATES,
+    **trends.TEMPLATES,
+    **entities.TEMPLATES,
 }
 
 

@@ -16,10 +16,12 @@ from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 from src.config import Settings
 from src.models import (
     Alert,
+    EntityCount,
     Incident,
     QueryError,
     QueryMetadata,
     QueryResult,
+    TrendPoint,
     format_relative_time,
 )
 from src.projections import apply_projection
@@ -306,6 +308,51 @@ class SentinelClient:
 
         return entities
 
+    def _parse_trend_points(self, tables) -> list[TrendPoint]:
+        """Parse LogsTable rows into TrendPoint dataclasses.
+
+        Maps TimeGenerated->timestamp, Count->count, AlertSeverity->severity (if present).
+        """
+        points = []
+        if not tables:
+            return points
+
+        table = tables[0]
+        columns = [col.name if hasattr(col, "name") else str(col) for col in table.columns]
+
+        for row in table.rows:
+            row_dict = dict(zip(columns, row, strict=False))
+            timestamp = self._parse_datetime(row_dict.get("TimeGenerated"))
+            count = int(row_dict.get("Count", 0))
+            severity = str(row_dict.get("AlertSeverity", ""))
+            points.append(TrendPoint(timestamp=timestamp, count=count, severity=severity))
+
+        return points
+
+    def _parse_entity_counts(self, tables) -> list[EntityCount]:
+        """Parse LogsTable rows into EntityCount dataclasses.
+
+        Maps EntityType->entity_type, EntityName->entity_name, AlertCount->count.
+        """
+        entities = []
+        if not tables:
+            return entities
+
+        table = tables[0]
+        columns = [col.name if hasattr(col, "name") else str(col) for col in table.columns]
+
+        for row in table.rows:
+            row_dict = dict(zip(columns, row, strict=False))
+            entities.append(
+                EntityCount(
+                    entity_type=str(row_dict.get("EntityType", "")),
+                    entity_name=str(row_dict.get("EntityName", "")),
+                    count=int(row_dict.get("AlertCount", 0)),
+                )
+            )
+
+        return entities
+
     @staticmethod
     def _parse_datetime(value) -> datetime:
         """Parse a datetime value from LogsTable, handling various formats.
@@ -547,4 +594,130 @@ class SentinelClient:
                 partial_error=partial_error,
             ),
             results=projected,
+        )
+
+    # Bin size auto-selection: short windows get hourly bins, longer windows get daily bins
+    _BIN_SIZE_MAP: dict[str, str] = {
+        "last_1h": "1h",
+        "last_24h": "1h",
+        "last_3d": "1d",
+        "last_7d": "1d",
+        "last_14d": "1d",
+        "last_30d": "1d",
+    }
+
+    def get_alert_trend(
+        self,
+        time_window: str = "last_7d",
+        min_severity: str = "Informational",
+        bin_size: str | None = None,
+    ) -> QueryResult | QueryError:
+        """Get alert trend data bucketed by time bins over a configurable period.
+
+        Auto-selects bin_size if not provided: "1h" for short windows (last_1h,
+        last_24h), "1d" for longer windows (last_3d and above).
+
+        Args:
+            time_window: Predefined time window key (e.g., "last_7d").
+            min_severity: Minimum severity threshold.
+            bin_size: Time bin granularity (e.g., "1h", "1d"). Auto-selected if None.
+
+        Returns:
+            QueryResult with TrendPoint dataclasses or QueryError.
+        """
+        if time_window not in TIME_WINDOWS:
+            return QueryError(
+                code="invalid_time_window",
+                message=f"Unknown time window: '{time_window}'. "
+                f"Valid: {sorted(TIME_WINDOWS.keys())}",
+                retry_possible=False,
+            )
+
+        # Auto-select bin_size based on time_window
+        if bin_size is None:
+            bin_size = self._BIN_SIZE_MAP.get(time_window, "1d")
+
+        window = TIME_WINDOWS[time_window]
+        query = build_query(
+            "alert_trend",
+            time_range=window["kql_ago"],
+            severity_filter=severity_filter(min_severity),
+            bin_size=bin_size,
+        )
+
+        timeout = TEMPLATE_TIMEOUTS.get("alert_trend", 180)
+        result = self._execute_query(query, window["timespan"], timeout)
+
+        if isinstance(result, QueryError):
+            return result
+
+        tables, is_partial, partial_error, query_ms = result
+        points = self._parse_trend_points(tables)
+
+        return QueryResult(
+            metadata=QueryMetadata(
+                total=len(points),
+                query_ms=query_ms,
+                truncated=is_partial,
+                partial_error=partial_error,
+            ),
+            results=points,
+        )
+
+    def get_top_entities(
+        self,
+        time_window: str = "last_7d",
+        min_severity: str = "Informational",
+        limit: int = 10,
+    ) -> QueryResult | QueryError:
+        """Get most-targeted entities ranked by alert count.
+
+        Extracts entities from SecurityAlert.Entities JSON column using
+        parse_json + mv-expand, filters to account/ip/host types, and
+        aggregates by entity name.
+
+        Args:
+            time_window: Predefined time window key.
+            min_severity: Minimum severity threshold.
+            limit: Max entities to return (clamped to hard cap).
+
+        Returns:
+            QueryResult with EntityCount dataclasses or QueryError.
+        """
+        if time_window not in TIME_WINDOWS:
+            return QueryError(
+                code="invalid_time_window",
+                message=f"Unknown time window: '{time_window}'. "
+                f"Valid: {sorted(TIME_WINDOWS.keys())}",
+                retry_possible=False,
+            )
+
+        # Clamp limit
+        limit = min(limit, MAX_LIMITS["top_entities"])
+
+        window = TIME_WINDOWS[time_window]
+        query = build_query(
+            "top_entities",
+            time_range=window["kql_ago"],
+            severity_filter=severity_filter(min_severity),
+            limit=limit,
+        )
+
+        timeout = TEMPLATE_TIMEOUTS.get("top_entities", 180)
+        result = self._execute_query(query, window["timespan"], timeout)
+
+        if isinstance(result, QueryError):
+            return result
+
+        tables, is_partial, partial_error, query_ms = result
+        entities = self._parse_entity_counts(tables)
+
+        return QueryResult(
+            metadata=QueryMetadata(
+                total=len(entities),
+                query_ms=query_ms,
+                truncated=is_partial,
+                partial_error=partial_error,
+            ),
+            results=entities,
         )

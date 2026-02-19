@@ -12,7 +12,7 @@ from azure.core.exceptions import HttpResponseError
 from azure.monitor.query import LogsQueryClient, LogsQueryStatus
 
 from src.config import Settings
-from src.models import QueryError, QueryResult
+from src.models import EntityCount, QueryError, QueryResult, TrendPoint
 from src.sentinel_client import SentinelClient
 
 # --------------------------------------------------------------------------
@@ -178,6 +178,42 @@ def _make_entity_table() -> MockLogsTable:
         ["ip", "10.0.0.1"],
         ["host", "workstation-01"],
     ]
+    return MockLogsTable(columns, rows)
+
+
+def _make_trend_table(count: int = 3, include_severity: bool = True) -> MockLogsTable:
+    """Create a mock alert trend LogsTable.
+
+    Rows represent time-bucketed alert counts.
+    """
+    if include_severity:
+        columns = ["TimeGenerated", "AlertSeverity", "Count"]
+    else:
+        columns = ["TimeGenerated", "Count"]
+
+    now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
+    rows = []
+    for i in range(count):
+        row = [(now - timedelta(days=count - 1 - i)).isoformat()]
+        if include_severity:
+            row.append("High" if i % 2 == 0 else "Medium")
+        row.append((i + 1) * 5)  # Count: 5, 10, 15...
+        rows.append(row)
+
+    return MockLogsTable(columns, rows)
+
+
+def _make_entity_count_table(count: int = 3) -> MockLogsTable:
+    """Create a mock top entities LogsTable with AlertCount ranking."""
+    columns = ["EntityType", "EntityName", "AlertCount"]
+    entity_data = [
+        ("account", "admin@contoso.com", 42),
+        ("ip", "10.0.0.1", 28),
+        ("host", "workstation-01", 15),
+        ("account", "user2@contoso.com", 8),
+        ("ip", "192.168.1.100", 3),
+    ]
+    rows = [list(entity_data[i]) for i in range(min(count, len(entity_data)))]
     return MockLogsTable(columns, rows)
 
 
@@ -497,3 +533,180 @@ class TestErrorHandling:
         call_args = mock_logs.query_workspace.call_args
         query = _extract_query(call_args)
         assert "take 100" in query
+
+
+# --------------------------------------------------------------------------
+# Tests: get_alert_trend
+# --------------------------------------------------------------------------
+
+
+class TestGetAlertTrend:
+    """Tests for SentinelClient.get_alert_trend()."""
+
+    def test_returns_query_result_with_trend_points(self, mock_client):
+        """get_alert_trend should return QueryResult with TrendPoint dataclasses."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_trend_table(count=3)],
+            statistics={"query": {"executionTime": 0.120}},
+        )
+
+        result = client.get_alert_trend(time_window="last_7d")
+
+        assert isinstance(result, QueryResult)
+        assert result.metadata.total == 3
+        assert result.metadata.query_ms == pytest.approx(120.0)
+        assert result.metadata.truncated is False
+        assert len(result.results) == 3
+        # Results should be TrendPoint dataclasses
+        point = result.results[0]
+        assert isinstance(point, TrendPoint)
+        assert isinstance(point.timestamp, datetime)
+        assert isinstance(point.count, int)
+        assert point.count == 5
+        assert point.severity == "High"
+
+    def test_auto_selects_hourly_bin_for_short_windows(self, mock_client):
+        """get_alert_trend should auto-select 1h bin_size for last_1h and last_24h."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_trend_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_alert_trend(time_window="last_24h")
+
+        call_args = mock_logs.query_workspace.call_args
+        query = _extract_query(call_args)
+        assert "bin(TimeGenerated, 1h)" in query
+
+    def test_auto_selects_daily_bin_for_long_windows(self, mock_client):
+        """get_alert_trend should auto-select 1d bin_size for last_7d and above."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_trend_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_alert_trend(time_window="last_7d")
+
+        call_args = mock_logs.query_workspace.call_args
+        query = _extract_query(call_args)
+        assert "bin(TimeGenerated, 1d)" in query
+
+    def test_custom_bin_size_overrides_auto(self, mock_client):
+        """Explicit bin_size should override auto-selection."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_trend_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_alert_trend(time_window="last_7d", bin_size="6h")
+
+        call_args = mock_logs.query_workspace.call_args
+        query = _extract_query(call_args)
+        assert "bin(TimeGenerated, 6h)" in query
+
+    def test_uses_180s_timeout(self, mock_client):
+        """Aggregation queries should use 180s server_timeout."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_trend_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_alert_trend()
+
+        call_args = mock_logs.query_workspace.call_args
+        assert call_args.kwargs.get("server_timeout") == 180
+
+    def test_invalid_time_window_returns_error(self, mock_client):
+        """Invalid time window should return QueryError."""
+        client, _ = mock_client
+        result = client.get_alert_trend(time_window="last_99d")
+        assert isinstance(result, QueryError)
+        assert result.code == "invalid_time_window"
+
+
+# --------------------------------------------------------------------------
+# Tests: get_top_entities
+# --------------------------------------------------------------------------
+
+
+class TestGetTopEntities:
+    """Tests for SentinelClient.get_top_entities()."""
+
+    def test_returns_query_result_with_entity_counts(self, mock_client):
+        """get_top_entities should return QueryResult with EntityCount dataclasses."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_entity_count_table(count=3)],
+            statistics={"query": {"executionTime": 0.095}},
+        )
+
+        result = client.get_top_entities(time_window="last_7d")
+
+        assert isinstance(result, QueryResult)
+        assert result.metadata.total == 3
+        assert result.metadata.query_ms == pytest.approx(95.0)
+        assert result.metadata.truncated is False
+        assert len(result.results) == 3
+        # Results should be EntityCount dataclasses ranked by count
+        entity = result.results[0]
+        assert isinstance(entity, EntityCount)
+        assert entity.entity_type == "account"
+        assert entity.entity_name == "admin@contoso.com"
+        assert entity.count == 42
+        # Second entity should have lower count
+        assert result.results[1].count == 28
+
+    def test_limit_clamping(self, mock_client):
+        """Entity limit should be clamped to MAX_LIMITS['top_entities'] (50)."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_entity_count_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_top_entities(limit=999)
+
+        call_args = mock_logs.query_workspace.call_args
+        query = _extract_query(call_args)
+        assert "take 50" in query
+
+    def test_uses_180s_timeout(self, mock_client):
+        """Entity aggregation queries should use 180s server_timeout."""
+        client, mock_logs = mock_client
+
+        mock_logs.query_workspace.return_value = MockResponse(
+            status=LogsQueryStatus.SUCCESS,
+            tables=[_make_entity_count_table(count=1)],
+            statistics=None,
+        )
+
+        client.get_top_entities()
+
+        call_args = mock_logs.query_workspace.call_args
+        assert call_args.kwargs.get("server_timeout") == 180
+
+    def test_invalid_time_window_returns_error(self, mock_client):
+        """Invalid time window should return QueryError."""
+        client, _ = mock_client
+        result = client.get_top_entities(time_window="invalid")
+        assert isinstance(result, QueryError)
+        assert result.code == "invalid_time_window"
