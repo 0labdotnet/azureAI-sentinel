@@ -4,8 +4,8 @@ Provides typed dataclasses for incidents, alerts, trends, and entities,
 plus QueryResult/QueryError wrappers and relative time formatting.
 """
 
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 
@@ -19,8 +19,8 @@ def format_relative_time(dt: datetime) -> str:
     Uses %I:%M %p for cross-platform compatibility (not %-I which fails on Windows).
     """
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    now = datetime.now(timezone.utc)
+        dt = dt.replace(tzinfo=UTC)
+    now = datetime.now(UTC)
     delta = now - dt
 
     seconds = int(delta.total_seconds())

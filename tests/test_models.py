@@ -1,6 +1,6 @@
 """Tests for data model serialization and format_relative_time utility."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from src.models import (
     Alert,
@@ -19,7 +19,7 @@ class TestIncident:
 
     def test_to_dict_converts_datetimes_to_iso(self):
         """Incident.to_dict() should convert datetime fields to ISO strings."""
-        now = datetime(2026, 2, 18, 10, 30, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 30, 0, tzinfo=UTC)
         incident = Incident(
             number=42,
             title="Suspicious login",
@@ -37,7 +37,7 @@ class TestIncident:
 
     def test_to_dict_includes_entity_count(self):
         """Incident.to_dict() must include entity_count field."""
-        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
         incident = Incident(
             number=1,
             title="Test",
@@ -53,7 +53,7 @@ class TestIncident:
 
     def test_entity_count_defaults_to_zero(self):
         """entity_count should default to 0 when not specified."""
-        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
         incident = Incident(
             number=1,
             title="Test",
@@ -66,7 +66,7 @@ class TestIncident:
 
     def test_to_dict_handles_none_datetimes(self):
         """None datetime fields should remain None in the dict."""
-        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
         incident = Incident(
             number=1,
             title="Test",
@@ -81,7 +81,7 @@ class TestIncident:
 
     def test_to_dict_with_all_detail_fields(self):
         """Full detail incident should serialize all fields including entity_count."""
-        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
         incident = Incident(
             number=100,
             title="Brute force attack",
@@ -116,7 +116,7 @@ class TestAlert:
 
     def test_to_dict_converts_time_generated(self):
         """Alert.to_dict() should convert time_generated to ISO string."""
-        now = datetime(2026, 2, 18, 14, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 14, 0, 0, tzinfo=UTC)
         alert = Alert(
             name="Suspicious_Login",
             display_name="Suspicious Login",
@@ -134,7 +134,7 @@ class TestQueryResult:
 
     def test_to_dict_serializes_nested_incidents(self):
         """QueryResult.to_dict() should call to_dict() on nested results."""
-        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 2, 18, 10, 0, 0, tzinfo=UTC)
         incidents = [
             Incident(
                 number=1,
@@ -206,7 +206,7 @@ class TestTrendPoint:
     """Tests for TrendPoint dataclass."""
 
     def test_to_dict(self):
-        ts = datetime(2026, 2, 18, 0, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 2, 18, 0, 0, 0, tzinfo=UTC)
         point = TrendPoint(timestamp=ts, count=15, severity="High")
         d = point.to_dict()
         assert d["timestamp"] == "2026-02-18T00:00:00+00:00"
@@ -230,37 +230,37 @@ class TestFormatRelativeTime:
 
     def test_just_now(self):
         """Timestamps less than 60 seconds ago should return 'just now'."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(seconds=30))
         assert result == "just now"
 
     def test_minutes_ago_singular(self):
         """1 minute ago should use singular form."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(minutes=1, seconds=10))
         assert result == "1 minute ago"
 
     def test_minutes_ago_plural(self):
         """Multiple minutes ago should use plural form."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(minutes=5))
         assert result == "5 minutes ago"
 
     def test_hours_ago_singular(self):
         """1 hour ago should use singular form."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(hours=1, minutes=10))
         assert result == "1 hour ago"
 
     def test_hours_ago_plural(self):
         """Multiple hours ago should use plural form."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(hours=3))
         assert result == "3 hours ago"
 
     def test_yesterday(self):
         """Timestamps between 1-2 days ago should show 'yesterday at HH:MM AM/PM'."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         yesterday = now - timedelta(hours=30)
         result = format_relative_time(yesterday)
         assert result.startswith("yesterday at ")
@@ -269,13 +269,13 @@ class TestFormatRelativeTime:
 
     def test_days_ago(self):
         """Timestamps 2-7 days ago should show 'N days ago'."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         result = format_relative_time(now - timedelta(days=3))
         assert result == "3 days ago"
 
     def test_older_dates(self):
         """Timestamps 7+ days ago should show 'Mon DD, YYYY' format."""
-        old = datetime(2026, 1, 5, 12, 0, 0, tzinfo=timezone.utc)
+        old = datetime(2026, 1, 5, 12, 0, 0, tzinfo=UTC)
         result = format_relative_time(old)
         assert result == "Jan 05, 2026"
 
@@ -284,7 +284,7 @@ class TestFormatRelativeTime:
         # Use utcnow-equivalent to create a naive datetime that is actually
         # 5 minutes ago in UTC (datetime.now() returns local time which may
         # differ from UTC by hours).
-        now_utc = datetime.now(timezone.utc)
+        now_utc = datetime.now(UTC)
         naive = now_utc.replace(tzinfo=None) - timedelta(minutes=5)
         result = format_relative_time(naive)
         # Should not raise and should contain 'minutes ago'
