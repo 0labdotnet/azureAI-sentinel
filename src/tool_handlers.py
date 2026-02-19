@@ -73,7 +73,8 @@ class ToolDispatcher:
 
         # Check if retryable error -- retry once silently
         if isinstance(result, QueryError) and result.retry_possible:
-            logger.debug("Retryable error on %s, retrying once", method.__name__)
+            method_name = getattr(method, "__name__", repr(method))
+            logger.debug("Retryable error on %s, retrying once", method_name)
             result = method(*args, **kwargs)
 
         return result.to_dict()
