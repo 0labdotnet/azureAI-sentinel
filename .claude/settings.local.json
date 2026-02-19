@@ -15,7 +15,16 @@
       "Bash(.venv/Scripts/python.exe -m pip:*)",
       "Bash(.venv/Scripts/python.exe -m pip install:*)",
       "Bash(.venv/Scripts/python.exe:*)",
-      "Bash(az account show:*)"
+      "Bash(az account show:*)",
+      "Bash(node:*)",
+      "Bash(python:*)",
+      "Bash(done)",
+      "Bash(test:*)",
+      "Bash(git -C C:/code/azureAI-sentinel log --oneline -5)",
+      "Bash(git -C C:/code/azureAI-sentinel status --short)",
+      "Bash(git -C C:/code/azureAI-sentinel add .planning/phases/02-sentinel-data-access/02-02-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md .planning/REQUIREMENTS.md)",
+      "Bash(git -C:*)",
+      "Bash(dir:*)"
     ]
   }
 }
