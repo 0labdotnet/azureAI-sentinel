@@ -63,8 +63,14 @@ def run_chat() -> None:
             # Clear terminal: ANSI escape \033[2J clears screen, \033[H moves cursor home
             print("\033[2J\033[H", end="", flush=True)
             print(_WELCOME_BANNER, file=sys.stderr)
-            print(f"Summary: {summary}")
-            print("Conversation cleared.")
+            print("")
+            print("---------------------------------- Conversation cleared----------------------------------")
+            print("")
+            print("Summary of previous conversation:")
+            print(f"{summary}")
+            print("")
+            print("-----------------------------------------------------------------------------------------")
+            print("")
             continue
 
         try:
