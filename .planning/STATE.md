@@ -10,28 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 2 of 6 (Sentinel Data Access)
-Plan: 0 of 2 in current phase
-Status: Phase 2 not yet planned
-Last activity: 2026-02-18 -- Phase 1 completed (all Azure resources provisioned and verified)
+Plan: 1 of 2 in current phase
+Status: Plan 02-01 complete, Plan 02-02 next
+Last activity: 2026-02-19 -- Plan 02-01 complete (data models, KQL templates, SentinelClient with incident/alert queries)
 
-Progress: [██░░░░░░░░] 16%
+Progress: [███░░░░░░░] 25%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 8min (automated only)
-- Total execution time: 0.13 hours (automated only)
+- Total plans completed: 3
+- Average duration: 9min (automated only)
+- Total execution time: 0.28 hours (automated only)
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 2 | 8min + manual | 8min (auto) |
+| 2. Sentinel Data Access | 1 | 9min | 9min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (manual), 01-02 (8min)
-- Trend: Phase 1 complete
+- Last 5 plans: 01-01 (manual), 01-02 (8min), 02-01 (9min)
+- Trend: Phase 2 in progress
 
 *Updated after each plan completion*
 
@@ -50,6 +51,10 @@ Recent decisions affecting current work:
 - [01-01]: Venv recreated with Python 3.14.2 (3.12 no longer on system)
 - [01-01]: Fixed clean_env fixture to patch load_dotenv when .env exists on disk
 - [01-02]: Added __test__ = False markers to connectivity check functions to prevent pytest collection conflicts
+- [02-01]: entity_count defaults to 0 in incident list view; populated from entity sub-query in get_incident_detail()
+- [02-01]: SentinelClient accepts optional client param for test injection (no credential mocking needed)
+- [02-01]: Used datetime.UTC alias throughout per ruff UP017 (Python 3.11+)
+- [02-01]: get_incident_detail() uses 30-day time window for lookups to find older incidents
 
 ### Pending Todos
 
@@ -62,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-18
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-sentinel-data-access/02-CONTEXT.md
+Last session: 2026-02-19
+Stopped at: Completed 02-01-PLAN.md
+Resume file: .planning/phases/02-sentinel-data-access/02-01-SUMMARY.md

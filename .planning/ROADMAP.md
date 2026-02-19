@@ -50,7 +50,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Data models, KQL template registry, projections, and SentinelClient with incident/alert queries
+- [x] 02-01-PLAN.md -- Data models, KQL template registry, projections, and SentinelClient with incident/alert queries
 - [ ] 02-02-PLAN.md -- Trend/entity queries, SentinelClient extension, and live data verification
 
 ### Phase 3: AI Orchestration & Integration
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete | 2026-02-18 |
-| 2. Sentinel Data Access | 0/2 | Planned | - |
+| 2. Sentinel Data Access | 1/2 | In Progress | - |
 | 3. AI Orchestration & Integration | 0/2 | Not started | - |
 | 4. Knowledge Base | 0/2 | Not started | - |
 | 5. CLI Experience & Polish | 0/2 | Not started | - |
