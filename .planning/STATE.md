@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-16)
 
 **Core value:** SOC analysts can get answers about their security environment in seconds using plain English -- no KQL knowledge required -- with live data grounded in real Sentinel incidents and enriched by historical context.
-**Current focus:** Phase 2: Sentinel Data Access
+**Current focus:** Phase 3: AI Orchestration & Integration
 
 ## Current Position
 
-Phase: 2 of 6 (Sentinel Data Access)
+Phase: 3 of 6 (AI Orchestration & Integration)
 Plan: 1 of 2 in current phase
-Status: Plan 02-01 complete, Plan 02-02 next
-Last activity: 2026-02-19 -- Plan 02-01 complete (data models, KQL templates, SentinelClient with incident/alert queries)
+Status: Phase 2 complete, Phase 3 next
+Last activity: 2026-02-18 -- Plan 02-02 complete (trend/entity queries, live verification of all 5 SentinelClient methods)
 
-Progress: [███░░░░░░░] 25%
+Progress: [████░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 9min (automated only)
-- Total execution time: 0.28 hours (automated only)
+- Total plans completed: 4
+- Average duration: 12min (automated only)
+- Total execution time: 0.58 hours (automated only)
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 2 | 8min + manual | 8min (auto) |
-| 2. Sentinel Data Access | 1 | 9min | 9min |
+| 2. Sentinel Data Access | 2 | 27min | 14min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (manual), 01-02 (8min), 02-01 (9min)
-- Trend: Phase 2 in progress
+- Last 5 plans: 01-01 (manual), 01-02 (8min), 02-01 (9min), 02-02 (18min)
+- Trend: Phase 2 complete, Phase 3 next
 
 *Updated after each plan completion*
 
@@ -55,6 +55,9 @@ Recent decisions affecting current work:
 - [02-01]: SentinelClient accepts optional client param for test injection (no credential mocking needed)
 - [02-01]: Used datetime.UTC alias throughout per ruff UP017 (Python 3.11+)
 - [02-01]: get_incident_detail() uses 30-day time window for lookups to find older incidents
+- [02-02]: Aggregation queries (trend, entity) use 180s server_timeout vs 60s for simple queries
+- [02-02]: Auto-select bin_size: 1h for short windows (last_1h/last_24h), 1d for longer (last_3d+)
+- [02-02]: Entity extraction uses parse_json + mv-expand KQL pattern with case() for account/ip/host types
 
 ### Pending Todos
 
@@ -67,6 +70,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-19
-Stopped at: Completed 02-01-PLAN.md
-Resume file: .planning/phases/02-sentinel-data-access/02-01-SUMMARY.md
+Last session: 2026-02-18
+Stopped at: Completed 02-02-PLAN.md (Phase 2 complete)
+Resume file: .planning/phases/02-sentinel-data-access/02-02-SUMMARY.md

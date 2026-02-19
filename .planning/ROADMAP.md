@@ -13,7 +13,7 @@ This roadmap delivers a POC command-line chatbot that gives SOC analysts natural
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Azure resource provisioning, content filter modification, project scaffolding, and config validation
-- [ ] **Phase 2: Sentinel Data Access** - KQL template registry and Sentinel client with live data queries for incidents, alerts, trends, and entities
+- [x] **Phase 2: Sentinel Data Access** - KQL template registry and Sentinel client with live data queries for incidents, alerts, trends, and entities
 - [ ] **Phase 3: AI Orchestration & Integration** - OpenAI tool loop, tool dispatch, multi-turn conversation, grounded responses, and end-to-end natural language querying
 - [ ] **Phase 4: Knowledge Base** - ChromaDB vector store with historical incident search, MITRE ATT&CK investigation guidance, and playbook retrieval
 - [ ] **Phase 5: CLI Experience & Polish** - Rich formatted output, color-coded severity tables, progress indicators, slash commands, error handling, and security posture summary
@@ -51,7 +51,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md -- Data models, KQL template registry, projections, and SentinelClient with incident/alert queries
-- [ ] 02-02-PLAN.md -- Trend/entity queries, SentinelClient extension, and live data verification
+- [x] 02-02-PLAN.md -- Trend/entity queries, SentinelClient extension, and live data verification
 
 ### Phase 3: AI Orchestration & Integration
 **Goal**: Users can have multi-turn natural language conversations that invoke Sentinel tools and receive grounded, accurate responses with reasoning transparency
@@ -121,7 +121,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete | 2026-02-18 |
-| 2. Sentinel Data Access | 1/2 | In Progress | - |
+| 2. Sentinel Data Access | 2/2 | Complete | 2026-02-18 |
 | 3. AI Orchestration & Integration | 0/2 | Not started | - |
 | 4. Knowledge Base | 0/2 | Not started | - |
 | 5. CLI Experience & Polish | 0/2 | Not started | - |

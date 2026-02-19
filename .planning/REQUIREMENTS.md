@@ -12,8 +12,8 @@ Requirements for the POC release. Each maps to exactly one roadmap phase.
 - [x] **QUERY-01**: User can ask natural language questions about security incidents and receive accurate results from Sentinel (e.g., "Show me high-severity incidents from the last 24 hours")
 - [x] **QUERY-02**: User can drill down into a specific incident by number to see detailed information including related alerts and entities
 - [x] **QUERY-03**: User can query security alerts filtered by severity and time range
-- [ ] **QUERY-04**: User can ask about alert trends over the past 7 days and receive a summarized analysis
-- [ ] **QUERY-05**: User can ask which entities (users, IPs, hosts) have been most targeted and receive a ranked analysis
+- [x] **QUERY-04**: User can ask about alert trends over the past 7 days and receive a summarized analysis
+- [x] **QUERY-05**: User can ask which entities (users, IPs, hosts) have been most targeted and receive a ranked analysis
 
 ### AI Orchestration
 
@@ -95,8 +95,8 @@ Each v1 requirement maps to exactly one phase. Updated during roadmap creation.
 | QUERY-01 | Phase 2 | Complete |
 | QUERY-02 | Phase 2 | Complete |
 | QUERY-03 | Phase 2 | Complete |
-| QUERY-04 | Phase 2 | Pending |
-| QUERY-05 | Phase 2 | Pending |
+| QUERY-04 | Phase 2 | Complete |
+| QUERY-05 | Phase 2 | Complete |
 | ORCH-01 | Phase 3 | Pending |
 | ORCH-02 | Phase 3 | Pending |
 | ORCH-03 | Phase 3 | Pending |
