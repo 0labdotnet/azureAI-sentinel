@@ -36,7 +36,7 @@ def format_relative_time(dt: datetime) -> str:
         hours = seconds // 3600
         return f"{hours} hour{'s' if hours != 1 else ''} ago"
     elif seconds < 172800:  # 2 days
-        return f"yesterday at {dt.strftime('%I:%M %p').lstrip('0')}"
+        return f"yesterday at {dt.strftime('%I:%M %p').lstrip('0')} UTC"
     elif seconds < 604800:  # 7 days
         days = seconds // 86400
         return f"{days} days ago"

@@ -266,6 +266,8 @@ class TestFormatRelativeTime:
         assert result.startswith("yesterday at ")
         # Should contain AM or PM
         assert "AM" in result or "PM" in result
+        # Must include UTC timezone label
+        assert "UTC" in result
 
     def test_days_ago(self):
         """Timestamps 2-7 days ago should show 'N days ago'."""
