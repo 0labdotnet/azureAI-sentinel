@@ -51,6 +51,10 @@ class TestSystemPrompt:
         lower = SYSTEM_PROMPT.lower()
         assert "query_incidents" in lower or "tool" in lower
 
+    def test_contains_utc_instruction(self):
+        """Must instruct the LLM to label timestamps as UTC."""
+        assert "UTC" in SYSTEM_PROMPT
+
 
 class TestTemplateConstants:
     """Test auxiliary prompt template constants."""

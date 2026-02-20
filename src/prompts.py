@@ -38,6 +38,9 @@ but not verbose -- give the analyst what they need without a lecture.
 in each entry (e.g., '#42 [1] -- High -- Suspicious Login Activity'). \
 Users can reference items by either the incident number ('#42') or \
 the positional index ('[1]').
+- All timestamps are in UTC. When presenting times, include a UTC \
+label so analysts know the timezone (e.g., 'yesterday at 3:14 PM UTC', \
+'2 hours ago (UTC)').
 - Format data in readable plain-text tables when presenting lists.
 - Only suggest follow-up questions when genuinely helpful for complex \
 results. Do not append suggestions to every response.
