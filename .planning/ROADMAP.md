@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Azure resource provisioning, content filter modification, project scaffolding, and config validation
 - [x] **Phase 2: Sentinel Data Access** - KQL template registry and Sentinel client with live data queries for incidents, alerts, trends, and entities
 - [x] **Phase 3: AI Orchestration & Integration** - OpenAI tool loop, tool dispatch, multi-turn conversation, grounded responses, and end-to-end natural language querying
-- [ ] **Phase 4: Knowledge Base** - ChromaDB vector store with historical incident search, MITRE ATT&CK investigation guidance, and playbook retrieval
+- [x] **Phase 4: Knowledge Base** - ChromaDB vector store with historical incident search, MITRE ATT&CK investigation guidance, and playbook retrieval
 - [ ] **Phase 5: CLI Experience & Polish** - Rich formatted output, color-coded severity tables, progress indicators, slash commands, error handling, and security posture summary
 - [ ] **Phase 6: Demo Preparation** - Scripted demo walkthrough with build-vs-buy cost comparison narrative
 
@@ -82,7 +82,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md -- VectorStore class, seed incidents, playbooks, MITRE fetcher, config updates, and tests
-- [ ] 04-02-PLAN.md -- KB tool definitions, dispatcher wiring, system prompt update, startup ingestion pipeline, and integration tests
+- [x] 04-02-PLAN.md -- KB tool definitions, dispatcher wiring, system prompt update, startup ingestion pipeline, and integration tests
 
 ### Phase 5: CLI Experience & Polish
 **Goal**: The chatbot presents a polished, professional terminal interface with formatted output, progress feedback, error handling, slash commands, and an executive security posture summary
@@ -123,6 +123,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Foundation | 2/2 | Complete | 2026-02-18 |
 | 2. Sentinel Data Access | 2/2 | Complete    | 2026-02-19 |
 | 3. AI Orchestration & Integration | 2/2 | Complete    | 2026-02-20 |
-| 4. Knowledge Base | 1/2 | In progress | - |
+| 4. Knowledge Base | 2/2 | Complete | 2026-02-21 |
 | 5. CLI Experience & Polish | 0/2 | Not started | - |
 | 6. Demo Preparation | 0/1 | Not started | - |

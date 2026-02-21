@@ -23,9 +23,9 @@ Requirements for the POC release. Each maps to exactly one roadmap phase.
 
 ### Knowledge Base
 
-- [ ] **KB-01**: User can ask for investigation guidance for a specific incident type and receive MITRE ATT&CK-mapped recommendations retrieved from the knowledge base
-- [ ] **KB-02**: User can ask "have we seen this type of attack before?" and the chatbot searches historical incidents for similar patterns
-- [ ] **KB-03**: User can ask about investigation procedures (e.g., "what's the response procedure for phishing?") and receive playbook-based guidance from the knowledge base
+- [x] **KB-01**: User can ask for investigation guidance for a specific incident type and receive MITRE ATT&CK-mapped recommendations retrieved from the knowledge base
+- [x] **KB-02**: User can ask "have we seen this type of attack before?" and the chatbot searches historical incidents for similar patterns
+- [x] **KB-03**: User can ask about investigation procedures (e.g., "what's the response procedure for phishing?") and receive playbook-based guidance from the knowledge base
 
 ### CLI Experience
 
@@ -100,9 +100,9 @@ Each v1 requirement maps to exactly one phase. Updated during roadmap creation.
 | ORCH-01 | Phase 3 | Complete |
 | ORCH-02 | Phase 3 | Complete |
 | ORCH-03 | Phase 3 | Complete |
-| KB-01 | Phase 4 | Pending |
-| KB-02 | Phase 4 | Pending |
-| KB-03 | Phase 4 | Pending |
+| KB-01 | Phase 4 | Complete |
+| KB-02 | Phase 4 | Complete |
+| KB-03 | Phase 4 | Complete |
 | CLI-01 | Phase 5 | Pending |
 | CLI-02 | Phase 5 | Pending |
 | CLI-03 | Phase 5 | Pending |
@@ -119,4 +119,4 @@ Each v1 requirement maps to exactly one phase. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-16*
-*Last updated: 2026-02-17 after roadmap creation (one-to-one phase mappings)*
+*Last updated: 2026-02-21 after Phase 4 completion (KB-01, KB-02, KB-03 complete)*

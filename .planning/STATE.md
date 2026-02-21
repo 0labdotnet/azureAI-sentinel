@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-16)
 
 **Core value:** SOC analysts can get answers about their security environment in seconds using plain English -- no KQL knowledge required -- with live data grounded in real Sentinel incidents and enriched by historical context.
-**Current focus:** Phase 4: Knowledge Base
+**Current focus:** Phase 5: CLI Experience
 
 ## Current Position
 
-Phase: 4 of 6 (Knowledge Base)
-Plan: 2 of 2 in current phase
-Status: Plan 04-01 complete, Plan 04-02 next
-Last activity: 2026-02-21 -- Plan 04-01 complete (VectorStore, seed data, playbooks, MITRE fetcher)
+Phase: 5 of 6 (CLI Experience)
+Plan: 1 of ? in current phase
+Status: Phase 4 complete, Phase 5 next
+Last activity: 2026-02-21 -- Plan 04-02 complete (KB integration, startup pipeline, full hybrid RAG)
 
-Progress: [███████░░░] 67%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 11min (automated only)
-- Total execution time: 1.12 hours (automated only)
+- Total plans completed: 9
+- Average duration: 10min (automated only)
+- Total execution time: 1.22 hours (automated only)
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [███████░░░] 67%
 | 1. Foundation | 2 | 8min + manual | 8min (auto) |
 | 2. Sentinel Data Access | 2 | 27min | 14min |
 | 3. AI Orchestration | 3 (of 3) | 37min | 12min |
-| 4. Knowledge Base | 1 (of 2) | 13min | 13min |
+| 4. Knowledge Base | 2 (of 2) | 19min | 10min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (18min), 03-01 (5min), 03-02 (~30min), 03-03 (2min), 04-01 (13min)
-- Trend: Phase 4 in progress
+- Last 5 plans: 03-01 (5min), 03-02 (~30min), 03-03 (2min), 04-01 (13min), 04-02 (6min)
+- Trend: Phase 4 complete
 
 *Updated after each plan completion*
 
@@ -73,6 +73,10 @@ Recent decisions affecting current work:
 - [04-01]: stix2 MemoryStore needs allow_custom=True for MITRE x_mitre_* extension fields
 - [04-01]: ChromaDB EphemeralClient shares in-process state; tests must delete collections before each test
 - [04-01]: MockEmbeddingFunction must implement full EmbeddingFunction protocol for ChromaDB v1.5.x
+- [04-02]: KB tools registered in dispatch_map only when vector_store is not None (Unknown tool fallback otherwise)
+- [04-02]: get_investigation_guidance combines playbook + incident search for comprehensive MITRE-mapped guidance
+- [04-02]: Startup ingestion extracted to _init_knowledge_base() helper for testability
+- [04-02]: Live Sentinel incidents ingested with graceful failure; chatbot starts even if Sentinel unreachable
 
 ### Pending Todos
 
@@ -86,5 +90,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 04-01-PLAN.md
-Resume file: .planning/phases/04-knowledge-base/04-02-PLAN.md
+Stopped at: Completed 04-02-PLAN.md (Phase 4 complete)
+Resume file: .planning/phases/05-cli-experience/ (Phase 5 planning needed)
