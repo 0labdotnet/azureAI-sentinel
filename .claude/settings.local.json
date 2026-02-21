@@ -24,7 +24,10 @@
       "Bash(git -C C:/code/azureAI-sentinel status --short)",
       "Bash(git -C C:/code/azureAI-sentinel add .planning/phases/02-sentinel-data-access/02-02-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md .planning/REQUIREMENTS.md)",
       "Bash(git -C:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(for h in 6de4ea0 b31a7f1 571ec94 83d2942)",
+      "Bash(do git log --oneline --all)",
+      "Bash(source .venv/Scripts/activate)"
     ]
   }
 }
