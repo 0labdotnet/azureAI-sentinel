@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 4 of 6 (Knowledge Base)
-Plan: 1 of 2 in current phase
-Status: Phase 3 fully complete (including gap closure), Phase 4 next
-Last activity: 2026-02-20 -- Plan 03-03 complete (UAT gap closure: incident numbers, UTC timestamps)
+Plan: 2 of 2 in current phase
+Status: Plan 04-01 complete, Plan 04-02 next
+Last activity: 2026-02-21 -- Plan 04-01 complete (VectorStore, seed data, playbooks, MITRE fetcher)
 
-Progress: [██████░░░░] 58%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 11min (automated only)
-- Total execution time: 0.90 hours (automated only)
+- Total execution time: 1.12 hours (automated only)
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [██████░░░░] 58%
 | 1. Foundation | 2 | 8min + manual | 8min (auto) |
 | 2. Sentinel Data Access | 2 | 27min | 14min |
 | 3. AI Orchestration | 3 (of 3) | 37min | 12min |
+| 4. Knowledge Base | 1 (of 2) | 13min | 13min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (9min), 02-02 (18min), 03-01 (5min), 03-02 (~30min), 03-03 (2min)
-- Trend: Phase 3 fully complete, ready for Phase 4
+- Last 5 plans: 02-02 (18min), 03-01 (5min), 03-02 (~30min), 03-03 (2min), 04-01 (13min)
+- Trend: Phase 4 in progress
 
 *Updated after each plan completion*
 
@@ -68,6 +69,10 @@ Recent decisions affecting current work:
 - [03-02]: ANSI escape codes used for /clear terminal screen clearing
 - [03-03]: Only yesterday branch gets UTC label -- other branches are relative and self-explanatory
 - [03-03]: Incident number shown as '#N [pos]' format combining Sentinel number with positional index
+- [04-01]: VectorStore accepts optional client and embedding_fn params for test DI (extends project pattern)
+- [04-01]: stix2 MemoryStore needs allow_custom=True for MITRE x_mitre_* extension fields
+- [04-01]: ChromaDB EphemeralClient shares in-process state; tests must delete collections before each test
+- [04-01]: MockEmbeddingFunction must implement full EmbeddingFunction protocol for ChromaDB v1.5.x
 
 ### Pending Todos
 
@@ -80,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-20
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-knowledge-base/04-CONTEXT.md
+Last session: 2026-02-21
+Stopped at: Completed 04-01-PLAN.md
+Resume file: .planning/phases/04-knowledge-base/04-02-PLAN.md

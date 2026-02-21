@@ -81,7 +81,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- VectorStore class, seed incidents, playbooks, MITRE fetcher, config updates, and tests
+- [x] 04-01-PLAN.md -- VectorStore class, seed incidents, playbooks, MITRE fetcher, config updates, and tests
 - [ ] 04-02-PLAN.md -- KB tool definitions, dispatcher wiring, system prompt update, startup ingestion pipeline, and integration tests
 
 ### Phase 5: CLI Experience & Polish
@@ -123,6 +123,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 1. Foundation | 2/2 | Complete | 2026-02-18 |
 | 2. Sentinel Data Access | 2/2 | Complete    | 2026-02-19 |
 | 3. AI Orchestration & Integration | 2/2 | Complete    | 2026-02-20 |
-| 4. Knowledge Base | 0/2 | Not started | - |
+| 4. Knowledge Base | 1/2 | In progress | - |
 | 5. CLI Experience & Polish | 0/2 | Not started | - |
 | 6. Demo Preparation | 0/1 | Not started | - |
