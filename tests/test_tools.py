@@ -1,15 +1,23 @@
 """Tests for OpenAI tool definitions in src/tools.py."""
 
 from src.queries import SEVERITY_ORDER, TIME_WINDOWS
-from src.tools import SENTINEL_TOOLS, get_tool_names
+from src.tools import KB_TOOLS, SENTINEL_TOOLS, get_tool_names
 
-EXPECTED_TOOL_NAMES = [
+EXPECTED_SENTINEL_NAMES = [
     "query_incidents",
     "get_incident_detail",
     "query_alerts",
     "get_alert_trend",
     "get_top_entities",
 ]
+
+EXPECTED_KB_NAMES = [
+    "search_similar_incidents",
+    "search_playbooks",
+    "get_investigation_guidance",
+]
+
+EXPECTED_ALL_NAMES = EXPECTED_SENTINEL_NAMES + EXPECTED_KB_NAMES
 
 # Severity enum in display order (High first) -- reverse of SEVERITY_ORDER
 EXPECTED_SEVERITY_ENUM = ["High", "Medium", "Low", "Informational"]
@@ -23,7 +31,7 @@ class TestToolDefinitions:
 
     def test_tool_names_match_expected(self):
         names = [t["function"]["name"] for t in SENTINEL_TOOLS]
-        assert names == EXPECTED_TOOL_NAMES
+        assert names == EXPECTED_SENTINEL_NAMES
 
     def test_each_tool_has_function_type(self):
         for tool in SENTINEL_TOOLS:
@@ -112,19 +120,52 @@ class TestToolDefinitions:
         ]
 
 
+class TestKBToolDefinitions:
+    """Test KB_TOOLS structure and content."""
+
+    def test_kb_tool_count(self):
+        assert len(KB_TOOLS) == 3
+
+    def test_kb_tool_names(self):
+        names = [t["function"]["name"] for t in KB_TOOLS]
+        assert names == EXPECTED_KB_NAMES
+
+    def test_each_kb_tool_has_function_type(self):
+        for tool in KB_TOOLS:
+            assert tool["type"] == "function"
+
+    def test_each_kb_tool_has_required_keys(self):
+        for tool in KB_TOOLS:
+            func = tool["function"]
+            assert "name" in func
+            assert "description" in func
+            assert "parameters" in func
+
+    def test_each_kb_tool_requires_query_param(self):
+        for tool in KB_TOOLS:
+            params = tool["function"]["parameters"]
+            assert "query" in params["properties"]
+            assert params["required"] == ["query"]
+
+    def test_no_kb_tool_has_strict_true(self):
+        for tool in KB_TOOLS:
+            assert tool.get("strict") is not True
+            assert tool["function"].get("strict") is not True
+
+
 class TestGetToolNames:
     """Test the get_tool_names() helper."""
 
     def test_returns_correct_names(self):
-        assert get_tool_names() == EXPECTED_TOOL_NAMES
+        assert get_tool_names() == EXPECTED_ALL_NAMES
 
     def test_returns_list_of_strings(self):
         names = get_tool_names()
         assert isinstance(names, list)
         assert all(isinstance(n, str) for n in names)
 
-    def test_returns_five_names(self):
-        assert len(get_tool_names()) == 5
+    def test_returns_eight_names(self):
+        assert len(get_tool_names()) == 8
 
 
 # ------------------------------------------------------------------
@@ -134,7 +175,7 @@ class TestGetToolNames:
 
 def _get_tool(name: str) -> dict:
     """Look up a tool definition by function name."""
-    for tool in SENTINEL_TOOLS:
+    for tool in SENTINEL_TOOLS + KB_TOOLS:
         if tool["function"]["name"] == name:
             return tool
     raise ValueError(f"Tool not found: {name}")

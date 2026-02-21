@@ -273,7 +273,134 @@ class TestStatusMessages:
         msg = dispatcher.get_status_message("get_top_entities")
         assert msg == "Finding top targeted entities..."
 
+    def test_search_similar_incidents_status(self, dispatcher):
+        msg = dispatcher.get_status_message("search_similar_incidents")
+        assert msg == "Searching historical incidents..."
+
+    def test_search_playbooks_status(self, dispatcher):
+        msg = dispatcher.get_status_message("search_playbooks")
+        assert msg == "Searching playbooks..."
+
+    def test_get_investigation_guidance_status(self, dispatcher):
+        msg = dispatcher.get_status_message("get_investigation_guidance")
+        assert msg == "Looking up investigation guidance..."
+
     def test_unknown_tool_status(self, dispatcher):
         msg = dispatcher.get_status_message("nonexistent_tool")
         assert isinstance(msg, str)
         assert len(msg) > 0
+
+
+class TestKBDispatchNoVectorStore:
+    """Test KB tool dispatch when vector_store is None."""
+
+    def test_search_similar_incidents_without_vs_returns_error(
+        self, mock_client
+    ):
+        dispatcher = ToolDispatcher(mock_client, vector_store=None)
+        result = dispatcher.dispatch(
+            "search_similar_incidents", {"query": "phishing"}
+        )
+        assert "error" in result
+        assert "Unknown tool" in result["error"]
+
+    def test_search_playbooks_without_vs_returns_error(
+        self, mock_client
+    ):
+        dispatcher = ToolDispatcher(mock_client, vector_store=None)
+        result = dispatcher.dispatch(
+            "search_playbooks", {"query": "brute force"}
+        )
+        assert "error" in result
+        assert "Unknown tool" in result["error"]
+
+    def test_get_investigation_guidance_without_vs_returns_error(
+        self, mock_client
+    ):
+        dispatcher = ToolDispatcher(mock_client, vector_store=None)
+        result = dispatcher.dispatch(
+            "get_investigation_guidance", {"query": "lateral movement"}
+        )
+        assert "error" in result
+        assert "Unknown tool" in result["error"]
+
+
+class TestKBDispatchWithVectorStore:
+    """Test KB tool dispatch when vector_store is provided."""
+
+    @pytest.fixture
+    def mock_vector_store(self):
+        """Create a mock VectorStore."""
+        vs = MagicMock()
+        vs.search_similar_incidents.return_value = {
+            "type": "similar_incidents",
+            "results": [{"document": "test", "metadata": {}, "confidence": "normal"}],
+            "low_confidence_warning": False,
+            "total": 1,
+        }
+        vs.search_playbooks.return_value = {
+            "type": "playbooks",
+            "results": [{"document": "test", "metadata": {}, "confidence": "normal"}],
+            "low_confidence_warning": False,
+            "total": 1,
+        }
+        return vs
+
+    @pytest.fixture
+    def kb_dispatcher(self, mock_client, mock_vector_store):
+        return ToolDispatcher(
+            mock_client, vector_store=mock_vector_store
+        )
+
+    def test_search_similar_incidents_dispatch(
+        self, kb_dispatcher, mock_vector_store
+    ):
+        result = kb_dispatcher.dispatch(
+            "search_similar_incidents",
+            {"query": "phishing attack on HR"},
+        )
+        mock_vector_store.search_similar_incidents.assert_called_once_with(
+            "phishing attack on HR"
+        )
+        assert result["type"] == "similar_incidents"
+
+    def test_search_playbooks_dispatch(
+        self, kb_dispatcher, mock_vector_store
+    ):
+        result = kb_dispatcher.dispatch(
+            "search_playbooks",
+            {"query": "brute force response"},
+        )
+        mock_vector_store.search_playbooks.assert_called_once_with(
+            "brute force response"
+        )
+        assert result["type"] == "playbooks"
+
+    def test_get_investigation_guidance_dispatch(
+        self, kb_dispatcher, mock_vector_store
+    ):
+        result = kb_dispatcher.dispatch(
+            "get_investigation_guidance",
+            {"query": "lateral movement detected"},
+        )
+        # Should call both search methods
+        mock_vector_store.search_playbooks.assert_called_once_with(
+            "lateral movement detected", n_results=3
+        )
+        mock_vector_store.search_similar_incidents.assert_called_once_with(
+            "lateral movement detected", n_results=3
+        )
+        assert result["type"] == "investigation_guidance"
+        assert "playbook_results" in result
+        assert "incident_results" in result
+        assert isinstance(result["low_confidence_warning"], bool)
+
+    def test_sentinel_tools_still_work_with_vs(
+        self, kb_dispatcher, mock_client
+    ):
+        """Sentinel tools should still function when VectorStore is present."""
+        result = kb_dispatcher.dispatch(
+            "query_incidents", {"time_window": "last_24h"}
+        )
+        mock_client.query_incidents.assert_called_once()
+        assert "metadata" in result

@@ -361,3 +361,41 @@ class TestSummarizeResult:
     def test_empty_dict(self):
         result = {}
         assert _summarize_result(result) == "OK"
+
+
+class TestChatSessionWithVectorStore:
+    """Test ChatSession tool list behavior with/without VectorStore."""
+
+    def test_with_vector_store_includes_kb_tools(
+        self, mock_settings, mock_openai_client, mock_sentinel_client
+    ):
+        mock_vs = MagicMock()
+        session = ChatSession(
+            mock_settings,
+            client=mock_openai_client,
+            sentinel_client=mock_sentinel_client,
+            vector_store=mock_vs,
+        )
+        # Should have 5 Sentinel + 3 KB = 8 tools
+        assert len(session._tools) == 8
+
+        # Verify tools are passed to the API call
+        session.send_message("test")
+        call_kwargs = mock_openai_client.chat.completions.create.call_args[1]
+        assert len(call_kwargs["tools"]) == 8
+
+    def test_without_vector_store_sentinel_only(
+        self, mock_settings, mock_openai_client, mock_sentinel_client
+    ):
+        session = ChatSession(
+            mock_settings,
+            client=mock_openai_client,
+            sentinel_client=mock_sentinel_client,
+        )
+        # Should have only 5 Sentinel tools
+        assert len(session._tools) == 5
+
+        # Verify tools are passed to the API call
+        session.send_message("test")
+        call_kwargs = mock_openai_client.chat.completions.create.call_args[1]
+        assert len(call_kwargs["tools"]) == 5
