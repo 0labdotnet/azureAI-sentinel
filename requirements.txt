@@ -5,6 +5,11 @@ azure-monitor-query>=2.0.0
 # Azure OpenAI
 openai>=2.21.0
 
+# Vector store & knowledge base
+chromadb>=1.5.0
+stix2>=3.0.2
+requests>=2.31.0
+
 # Utilities
 python-dotenv>=1.0.0
 rich>=14.0.0

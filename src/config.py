@@ -36,6 +36,10 @@ class Settings:
     azure_client_id: str = ""
     azure_client_secret: str = ""
 
+    # Knowledge base (Phase 4)
+    azure_openai_embedding_deployment: str = "text-embedding-3-large"
+    chromadb_path: str = "./chroma_db"
+
     # Internal tuning knobs (not loaded from env vars)
     max_tool_rounds: int = 5
     max_turns: int = 30
@@ -48,10 +52,10 @@ REQUIRED_VARS: dict[str, str] = {
     "SENTINEL_WORKSPACE_ID": "Log Analytics workspace GUID",
 }
 
-# Phase 2+ optional vars -- noted as "not yet needed"
+# Optional vars -- have defaults, override via env vars if needed
 OPTIONAL_VARS: dict[str, str] = {
-    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT": "Embedding model deployment (Phase 4)",
-    "CHROMADB_PATH": "ChromaDB storage path (Phase 4)",
+    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT": "Embedding model deployment (default: text-embedding-3-large)",
+    "CHROMADB_PATH": "ChromaDB storage path (default: ./chroma_db)",
 }
 
 
@@ -67,6 +71,10 @@ def load_settings() -> Settings:
         azure_tenant_id=os.getenv("AZURE_TENANT_ID", ""),
         azure_client_id=os.getenv("AZURE_CLIENT_ID", ""),
         azure_client_secret=os.getenv("AZURE_CLIENT_SECRET", ""),
+        azure_openai_embedding_deployment=os.getenv(
+            "AZURE_OPENAI_EMBEDDING_DEPLOYMENT", "text-embedding-3-large"
+        ),
+        chromadb_path=os.getenv("CHROMADB_PATH", "./chroma_db"),
     )
 
 
