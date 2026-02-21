@@ -30,12 +30,13 @@ class MockEmbeddingFunction(EmbeddingFunction[Documents]):  # type: ignore[type-
     def __call__(self, input: Documents) -> Embeddings:  # noqa: A002
         return [self._embed(text) for text in input]
 
-    def name(self) -> str:
-        return "default"
+    @staticmethod
+    def name() -> str:
+        return "mock_embedding"
 
-    @classmethod
-    def build_from_config(cls, config: dict[str, Any]) -> "MockEmbeddingFunction":
-        return cls()
+    @staticmethod
+    def build_from_config(config: dict[str, Any]) -> "MockEmbeddingFunction":
+        return MockEmbeddingFunction()
 
     def get_config(self) -> dict[str, Any]:
         return {}
