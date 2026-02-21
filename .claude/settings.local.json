@@ -27,7 +27,8 @@
       "Bash(dir:*)",
       "Bash(for h in 6de4ea0 b31a7f1 571ec94 83d2942)",
       "Bash(do git log --oneline --all)",
-      "Bash(source .venv/Scripts/activate)"
+      "Bash(source .venv/Scripts/activate)",
+      "Skill(gsd:execute-phase)"
     ]
   }
 }
