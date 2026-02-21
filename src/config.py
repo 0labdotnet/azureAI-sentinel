@@ -54,7 +54,9 @@ REQUIRED_VARS: dict[str, str] = {
 
 # Optional vars -- have defaults, override via env vars if needed
 OPTIONAL_VARS: dict[str, str] = {
-    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT": "Embedding model deployment (default: text-embedding-3-large)",
+    "AZURE_OPENAI_EMBEDDING_DEPLOYMENT": (
+        "Embedding model deployment (default: text-embedding-3-large)"
+    ),
     "CHROMADB_PATH": "ChromaDB storage path (default: ./chroma_db)",
 }
 
