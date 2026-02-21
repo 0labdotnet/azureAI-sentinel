@@ -78,11 +78,11 @@ Plans:
   2. User can ask "have we seen this type of attack before?" and receive semantically matched historical incidents from the knowledge base
   3. User can ask about response procedures (e.g., "what's the response procedure for phishing?") and receive playbook-based guidance
   4. Embeddings use text-embedding-3-large at 1024 dimensions consistently for both ingestion and retrieval (no model mismatch)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: ChromaDB vector store, embedding pipeline, and knowledge base content
-- [ ] 04-02: Semantic search tools integrated into the tool loop
+- [ ] 04-01-PLAN.md -- VectorStore class, seed incidents, playbooks, MITRE fetcher, config updates, and tests
+- [ ] 04-02-PLAN.md -- KB tool definitions, dispatcher wiring, system prompt update, startup ingestion pipeline, and integration tests
 
 ### Phase 5: CLI Experience & Polish
 **Goal**: The chatbot presents a polished, professional terminal interface with formatted output, progress feedback, error handling, slash commands, and an executive security posture summary
