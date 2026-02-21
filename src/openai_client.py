@@ -20,7 +20,8 @@ from src.prompts import (
 )
 from src.sentinel_client import SentinelClient
 from src.tool_handlers import ToolDispatcher
-from src.tools import SENTINEL_TOOLS
+from src.tools import KB_TOOLS, SENTINEL_TOOLS
+from src.vector_store import VectorStore
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ class ChatSession:
         *,
         client: AzureOpenAI | None = None,
         sentinel_client: SentinelClient | None = None,
+        vector_store: VectorStore | None = None,
     ):
         """Initialize ChatSession.
 
@@ -48,6 +50,7 @@ class ChatSession:
             settings: Application settings.
             client: Optional AzureOpenAI client (for test injection).
             sentinel_client: Optional SentinelClient (for test injection).
+            vector_store: Optional VectorStore (for KB tools; None disables KB).
         """
         self._settings = settings
         self._model = settings.azure_openai_chat_deployment
@@ -69,7 +72,15 @@ class ChatSession:
         else:
             self._sentinel_client = SentinelClient(settings)
 
-        self._dispatcher = ToolDispatcher(self._sentinel_client)
+        self._dispatcher = ToolDispatcher(
+            self._sentinel_client, vector_store=vector_store
+        )
+
+        # Combine tools: include KB tools only when VectorStore is available
+        if vector_store is not None:
+            self._tools = SENTINEL_TOOLS + KB_TOOLS
+        else:
+            self._tools = SENTINEL_TOOLS
 
         # Conversation state (does NOT include system prompt -- that is prepended on each call)
         self._messages: list[dict] = []
@@ -105,7 +116,7 @@ class ChatSession:
             response = self._client.chat.completions.create(
                 model=self._model,
                 messages=full_messages,
-                tools=SENTINEL_TOOLS,
+                tools=self._tools,
                 tool_choice="auto",
             )
 

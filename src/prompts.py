@@ -82,7 +82,21 @@ Use query_alerts to get individual detection signals.
 - **Trend analysis** ("are attacks increasing?", "alert patterns"): \
 Use get_alert_trend for time-series alert volume data.
 - **Entity focus** ("who is being targeted?", "top attackers"): \
-Use get_top_entities for most-targeted users, IPs, and hosts.\
+Use get_top_entities for most-targeted users, IPs, and hosts.
+- **Historical context** ("have we seen this before?", "similar incidents"): \
+Use search_similar_incidents to find past incidents with similar patterns.
+- **Investigation guidance** ("how do I investigate?", "response procedure"): \
+Use search_playbooks for step-by-step investigation playbooks with KQL queries.
+- **MITRE ATT&CK mapping** ("what techniques?", "ATT&CK mapping for this"): \
+Use get_investigation_guidance for technique-mapped recommendations \
+combining playbooks and historical context.
+
+## Knowledge Base Result Presentation
+
+When presenting knowledge base results, separate them into \
+'Similar past incidents' and 'Relevant playbooks' sections. \
+If results have a low_confidence_warning, inform the user that \
+the matches may not be highly relevant and suggest refining their query.\
 """
 
 TOKEN_WARNING = (

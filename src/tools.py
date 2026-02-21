@@ -261,6 +261,94 @@ SENTINEL_TOOLS: list[dict] = [
 ]
 
 
+KB_TOOLS: list[dict] = [
+    {
+        "type": "function",
+        "function": {
+            "name": "search_similar_incidents",
+            "description": (
+                "Search for similar historical incidents in the "
+                "knowledge base. Use this when the user asks "
+                "'have we seen this before?', 'similar attacks', "
+                "'historical incidents like X', or wants to know "
+                "if a pattern has occurred previously."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": (
+                            "Natural language description of the "
+                            "incident or attack pattern to search for."
+                        ),
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_playbooks",
+            "description": (
+                "Search for investigation and response playbooks "
+                "in the knowledge base. Use this when the user "
+                "asks 'how to investigate X', 'response procedure "
+                "for Y', 'investigation guidance', or wants "
+                "step-by-step instructions for handling an "
+                "incident type."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": (
+                            "Natural language description of the "
+                            "investigation topic or incident type "
+                            "to find playbooks for."
+                        ),
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_investigation_guidance",
+            "description": (
+                "Get MITRE ATT&CK-mapped investigation guidance "
+                "combining playbooks and historical context. "
+                "Use this when the user asks about 'MITRE "
+                "techniques', 'ATT&CK mappings', 'what techniques "
+                "are involved in X', or wants technique-based "
+                "recommendations for investigating an attack."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": (
+                            "Natural language description of the "
+                            "attack or technique to get guidance for."
+                        ),
+                    },
+                },
+                "required": ["query"],
+            },
+        },
+    },
+]
+
+
 def get_tool_names() -> list[str]:
     """Return the list of all tool function names."""
-    return [tool["function"]["name"] for tool in SENTINEL_TOOLS]
+    return [
+        tool["function"]["name"]
+        for tool in SENTINEL_TOOLS + KB_TOOLS
+    ]
